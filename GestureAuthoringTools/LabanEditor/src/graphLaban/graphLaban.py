@@ -4,6 +4,8 @@
 # --------------------------------------------------------------------------------------------
 
 import os
+import sys
+sys.path.append(os.getcwd()+'//src//graphLaban')
 
 import matplotlib.pyplot as plt
 plt.rcParams['toolbar'] = 'None'
@@ -12,7 +14,7 @@ from matplotlib.widgets import Slider, Button, RadioButtons
 import matplotlib.cm as cm
 import matplotlib.patches as patches
 
-import tkMessageBox
+import tkinter.messagebox
 
 import cv2
 

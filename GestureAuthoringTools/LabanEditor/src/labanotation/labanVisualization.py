@@ -88,19 +88,20 @@ class convertLabanScriptToView:
     #------------------------------------------------------------------------------
     # draw a vertical dashed line.
     def dashed(self, x1, y1, y2):
+
         dash = 40
         if y1 > y2:
             a = y1; y1 = y2; y2 = a
-        for i in range(0,(np.abs(y2-y1))/dash):
-            cv2.line(self.img,(x1,y2-i*dash),(x1,y2-i*dash-dash/2),0,2)
+        for i in range(0,int((np.abs(y2-y1))/dash)):
+            cv2.line(self.img,(int(x1),int(y2-i*dash)),(int(x1),int(y2-i*dash-dash/2)),0,2)
         if y2-(i+1)*dash > y1:
-            cv2.line(self.img,(x1,y2-(i+1)*dash),(x1,y1),0,2)
+            cv2.line(self.img,(int(x1),int(y2-(i+1)*dash)),(int(x1),int(y1)),0,2)
     
 
     #------------------------------------------------------------------------------
     # canvas initialization
     def init_canvas(self):
-        unit = self.width/11
+        unit = int(self.width/11)
         floor = self.height-self.bottom
         cv2.line(self.img,(unit*3,0),(unit*3,floor),0,2)
         cv2.line(self.img,(unit*5,0),(unit*5,floor),0,2)
@@ -118,7 +119,7 @@ class convertLabanScriptToView:
             y = floor - i*self.scale
             if y < 0:
                 break
-            cv2.line(self.img,(x1,y),(x2,y),0,2)
+            cv2.line(self.img,(int(x1),int(y)),(int(x2),int(y)),0,2)
             i += 1
         font = cv2.FONT_HERSHEY_SIMPLEX
         subtitle = self.height-50
@@ -130,7 +131,7 @@ class convertLabanScriptToView:
         cv2.putText(self.img,'head',(10*unit-5,title), font, 0.8   , 1,2)
         cv2.putText(self.img,'arm(L)',(0*unit+10,title), font, 0.8, 1,2)
         cv2.putText(self.img,'arm(R)',(8*unit+10,title), font, 0.8, 1,2)
-#        cv2.putText(self.img, self.name,(3*unit+10,self.height-35), font, 0.8, 1,2)
+    # cv2.putText(self.img, self.name,(3*unit+10,self.height-35), font, 0.8, 1,2)
     
     #------------------------------------------------------------------------------
     # draw sign of Labanotation.
@@ -144,15 +145,16 @@ class convertLabanScriptToView:
     # level: low, normal, high
     # (x1,y1) is the left top corner, (x2,y2) is the right bottom corner.
     # 
-    def sign(self, cell, (time1,time2), side="right", dire = "place", lv = "low"):
+    def sign(self, cell, time, side="right", dire = "place", lv = "low"):
         unit = self.width/11
         x1 = (cell-1)*unit+7#left top corner
         x2 = cell*unit-5
-        y1 = self.height-self.bottom-int(time2*self.scale)+3#right bottom corner
-        y2 = self.height-self.bottom-int(time1*self.scale)-3
+
+        y1 = self.height-self.bottom-int(time[1]*self.scale)+3#right bottom corner
+        y2 = self.height-self.bottom-int(time[0]*self.scale)-3
         #shading: pattern/black/dot
         if lv=="normal":
-            cv2.circle(self.img,((x1+x2)/2,(y1+y2)/2), 4, 0,-1)
+            cv2.circle(self.img,(int((x1+x2)/2),int((y1+y2)/2)), 4, 0,-1)
         elif lv=="high":
             step = 20
             i=0
@@ -169,12 +171,12 @@ class convertLabanScriptToView:
                     xr = x2
                 if (xl>xr)or(yr>yl):
                     break
-                cv2.line(self.img, (xl,yl),(xr, yr),0,2)
+                cv2.line(self.img, (int(xl),int(yl)),(int(xr), int(yr)),0,2)
                 i+=1
         elif lv=="low":
-            cv2.rectangle(self.img,(x1,y1),(x2,y2),0,-1)
+            cv2.rectangle(self.img,(int(x1),int(y1)),(int(x2),int(y2)),0,-1)
         else:
-            print "Unknow Level: " + lv
+            print("Unknow Level: " + lv)
         #shape: trapezoid, polygon, triangle, rectangle
         if dire=="right":
             pts = np.array([[x1,y1-1],[x2+1,y1-1],[x2+1,(y1+y2)/2]],np.int32)
@@ -211,30 +213,30 @@ class convertLabanScriptToView:
             pts = np.array([[x1,y1],[x2,y1],[x2,y2],[x1,y2-(y2-y1)/3]],np.int32)
             cv2.polylines(self.img, [pts], True, 0, 2)
         elif dire=="forward" and side=="right":
-            cv2.rectangle(self.img,(x1+(x2-x1)/2,y1-1),(x2+1,y1+(y2-y1)/3),255,-1)
+            cv2.rectangle(self.img,(int(x1+(x2-x1)/2),int(y1-1)),(int(x2+1),int(y1+(y2-y1)/3)),255,-1)
             pts = np.array([[x1,y1],[x1+(x2-x1)/2,y1],[x1+(x2-x1)/2,y1+(y2-y1)/3],
                             [x2,y1+(y2-y1)/3],[x2,y2],[x1,y2]],np.int32)
             cv2.polylines(self.img, [pts], True, 0, 2)
         elif dire=="forward" and side=="left":
-            cv2.rectangle(self.img,(x1-1,y1-1),(x1+(x2-x1)/2,y1+(y2-y1)/3),255,-1)
+            cv2.rectangle(self.img,(int(x1-1),int(y1-1)),(int(x1+(x2-x1)/2),int(y1+(y2-y1)/3)),255,-1)
             pts = np.array([[x1,y1+(y2-y1)/3],[x1+(x2-x1)/2,y1+(y2-y1)/3],[x1+(x2-x1)/2,y1],
                             [x2,y1],[x2,y2],[x1,y2]],np.int32)
             cv2.polylines(self.img, [pts], True, 0, 2)
         elif dire=="backward" and side=="right":
-            cv2.rectangle(self.img,(x1+(x2-x1)/2,y2-(y2-y1)/3),(x2+1,y2+1),255,-1)
+            cv2.rectangle(self.img,(int(x1+(x2-x1)/2),int(y2-(y2-y1)/3)),(int(x2+1),int(y2+1)),255,-1)
             pts = np.array([[x1,y1],[x2,y1],[x2,y2-(y2-y1)/3],
                             [x1+(x2-x1)/2,y2-(y2-y1)/3],[x1+(x2-x1)/2,y2],[x1,y2]],np.int32)
             cv2.polylines(self.img, [pts], True, 0, 2)
         elif dire=="backward" and side=="left":
-            cv2.rectangle(self.img,(x1-1,y2-(y2-y1)/3),(x1+(x2-x1)/2,y2+1),255,-1)
+            cv2.rectangle(self.img,(int(x1-1),int(y2-(y2-y1)/3)),(int(x1+(x2-x1)/2),int(y2+1)),255,-1)
             pts = np.array([[x1,y1],[x2,y1],[x2,y2],
                             [x1+(x2-x1)/2,y2],[x1+(x2-x1)/2,y2-(y2-y1)/3],
                             [x1,y2-(y2-y1)/3]],np.int32)
             cv2.polylines(self.img, [pts], True, 0, 2)
         elif dire=="place":#"Place"
-            cv2.rectangle(self.img,(x1,y1),(x2,y2),0,2)
+            cv2.rectangle(self.img,(int(x1),int(y1)),(int(x2),int(y2)),0,2)
         else:
-            print "Unknow Direction: " + side + ": " + dire
+            print("Unknow Direction: " + side + ": " + dire)
     
     #------------------------------------------------------------------------------
     # draw one column of labanotation for one limb

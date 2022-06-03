@@ -21,7 +21,7 @@ bType = np.dtype({'names':[ 'timeS',                # milliseconds
                             'hipL', 'kneeL', 'ankleL', 'footL',
                             'hipR', 'kneeR', 'ankleR', 'footR',
                             'spineS', 'handTL', 'thumbL', 'handTR', 'thumbR'],
-                'formats':[ long,
+                'formats':[ int,
                             bool,
                             jType, jType,
                             jType, jType,
@@ -93,7 +93,7 @@ def loadKinectDataFile(filePath, fFillGap = False):
                 refPoseA = kinectData[-1][0]
                 refPoseB = tempBody[0]
 
-                for j in range(1, cnt):
+                for j in range(1, int(cnt)):
                     extraBody = np.zeros(1, dtype=bType)
                     # add time first
                     extraBody['timeS'] = 1 + 33*idx

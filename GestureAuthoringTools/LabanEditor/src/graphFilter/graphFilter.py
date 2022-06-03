@@ -16,7 +16,8 @@ from matplotlib.widgets import Slider, Cursor, Button, RadioButtons
 from mpl_toolkits.axes_grid1.inset_locator import InsetPosition
 import matplotlib.patches as patches
 
-import tkMessageBox
+
+import tkinter.messagebox
 
 import settings
 
@@ -81,7 +82,7 @@ class graphFilter:
         except Exception as e:
             pass
 
-        tkMessageBox.showinfo("Labanotation",
+        messagebox.showinfo("Labanotation",
             "Key Frame (green star icon) Editing Instructions:\r\n\r\n\r\n"
             "  - Right-click and drag on key frame star to *MOVE* along graph line.\r\n\r\n"
             "  - Right-click on graph line to *CREATE* a new key frame star.\r\n\r\n"

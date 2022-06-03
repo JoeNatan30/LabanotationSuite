@@ -2,6 +2,9 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 # --------------------------------------------------------------------------------------------
+import os
+import sys
+sys.path.append(os.getcwd()+'\\src\\labanotation')
 
 import settings
 
@@ -23,7 +26,7 @@ class labanotation:
     # Class initialization
     #
     def __init__(self):
-        print 'Initializing Labanotation...'
+        print('Initializing Labanotation...')
 
     #------------------------------------------------------------------------------
     # convert joint data frames to labanotation using specified algorithm

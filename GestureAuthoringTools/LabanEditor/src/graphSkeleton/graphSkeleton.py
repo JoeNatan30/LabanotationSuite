@@ -15,7 +15,8 @@ from mpl_toolkits.axes_grid1.inset_locator import InsetPosition
 import matplotlib.patches as patches
 import matplotlib.ticker as ticker
 
-import tkMessageBox
+
+import tkinter.messagebox
 
 import settings
 
@@ -41,7 +42,7 @@ class graph3D:
                                 'hipL', 'kneeL', 'ankleL', 'footL',
                                 'hipR', 'kneeR', 'ankleR', 'footR',
                                 'spineS', 'handTL', 'thumbL', 'handTR', 'thumbR'],
-                    'formats':[ long,
+                    'formats':[ int,
                                 bool,
                                 jType, jType,
                                 jType, jType,

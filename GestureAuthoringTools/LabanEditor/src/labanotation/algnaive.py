@@ -13,7 +13,7 @@ import labanProcessor as lp
 import matplotlib.patches as patches
 from matplotlib.patches import Patch
 
-import tkMessageBox
+import tkinter.messagebox
 
 import settings
 

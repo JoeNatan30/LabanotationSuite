@@ -9,8 +9,10 @@ import pickle
 import numpy as np
 from operator import sub
 
-import Tkinter, tkFileDialog
-from Tkinter import *
+import tkinter
+import tkinter.filedialog
+
+from tkinter import *
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -512,7 +514,7 @@ class guiMenu:
         if (settings.tkGuiCanvas is not None):
             options['parent'] = settings.tkGuiCanvas
 
-        file = tkFileDialog.askopenfilename(**options)
+        file = filedialog.askopenfilename(**options)
 
         if not file:
             return None

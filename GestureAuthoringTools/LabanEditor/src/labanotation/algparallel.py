@@ -23,7 +23,7 @@ from matplotlib.backend_bases import MouseEvent
 import matplotlib.patches as patches
 import matplotlib.ticker as ticker
 
-import tkMessageBox
+import tkinter.messagebox
 
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'tool'))
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'laban_tool'))
